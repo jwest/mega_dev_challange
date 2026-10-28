@@ -1,0 +1,62 @@
+---
+layout: runbook
+title: '0002 · Separate causes behind #4471'
+owner: jwest
+status: accepted
+reviewed: 2026-10-28
+signature: 'jwest · S01E03 · 2026-10-28'
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  import ReportExceptions from '#lib/kb/ReportExceptions.svelte';
+</script>
+
+**Decision:** supersede [0001: deduplicate by subject](/kb/decisions/0001-dedupe-by-subject). Keep the accepted record unchanged as history. Read this page before applying the old [triage instructions](/kb/triage/dedupe) or the prose on [#4471](/kb/incidents/4471).
+
+## What changed
+
+The incident's “one issue, one fix” claim is contradicted by its own computed views. A shared subject is a symptom, not a cause. Different subjects can describe the same bug; identical subjects can describe different bugs. Intake tags use the browser locale, which can differ from the tenant's date convention. They are guesses, not ground truth.
+
+## Problems and ownership
+
+- **Parser — [engineering ticket](https://github.com/jwest/mega_dev_challange/issues/1):** the shared parser interprets dates month first, even for day-first tenants. Day and month swap on the shared parsing path. Fix parsing against the tenant's convention and verify the booking-to-invite round trip. Example: Harbour Dental, `R-41200`, 7 April becomes 4 July.
+- **Form hint — [engineering ticket](https://github.com/jwest/mega_dev_challange/issues/2):** `booking-v3` prints `MM/DD/YYYY`, but the form reads a day-first tenant's input day first. Users follow the hint and get the wrong date. Fix the hint and form contract together. Affected form tenants: Alder Physio, Copper Studio and Pale Harbour. Example: `R-41230`, Copper Studio, form channel. This needs its own fix and ticket.
+
+The table below computes counts from unique report IDs, tenant configuration and channel using `causes.ts` and `locales.ts`. Overlapping export pages must not inflate report counts. Browser locale and `meta.intakeTag` are shown only as evidence of intake disagreement. Counts describe the supplied October export, not a fresh live query.
+
+<CauseTable ticket={4471} />
+
+## Do not hide contradictory reports
+
+Tenant/channel classification routes reports; it does not prove a root cause for every body. The desk's `oneDayMove` notes identify reports whose words do not establish a day/month swap. These include one-day shifts, a June-only anomaly, an invite arriving before booking and different days in Lisbon and Toronto. Do not silently rewrite them as parser evidence or claim a proven timezone bug. Preserve the IDs and investigate original timestamps, timezone, intended date and booking history. Split into further engineering issues only when evidence establishes distinct causes.
+
+<ReportExceptions />
+
+## The queue did not suddenly start in July
+
+The received and merged timestamps measure different events. Reports arrived from April onward; a large July merge is backlog handling, not a sudden spike in new failures. New reports continue after that merge. “Known” does not mean resolved. Keep investigating new symptoms and update the counts from new data rather than treating this export as live.
+
+<QueueTimeline ticket={4471} />
+
+## Replacement triage rule
+
+1. Read the report body. Resolve the tenant's actual locale and form from the tenant directory; do not infer them from browser locale.
+2. Compare the affected path and cause. Merge only when the cause is established as the same; subjects may differ.
+3. Keep different causes apart, even when subjects match. Unknown tenant or contradictory symptom means investigate, not automatic merging.
+4. On the date parsing path, use the parser ticket. On `booking-v3` form input for a day-first tenant, use the separate hint ticket. Preserve exceptions for investigation.
+5. Deduplicate export rows by report ID. Retain the report's received time separately from merge time.
+6. Re-read new arrivals while work is in progress. Reconcile this decision, the incident page and the triage entry point when the desk changes; an old accepted decision is superseded by a new record, never rewritten.
+
+<DedupeExplorer />
+
+## Evidence and limits
+
+Source: `kb-export-267efc5e.zip`, exported 2026-10-04. Relevant files: `src/lib/data/reports-4471.json`, `src/lib/data/tenants/*.json`, `src/lib/data/desk-notes.json`, `src/lib/kb/causes.ts`, `locales.ts`, `CauseTable.svelte`, `QueueTimeline.svelte` and `DedupeExplorer.svelte`. Reproducible calculation and full report-to-group mapping: repository `analyze.mjs` and `analysis.json`.
+
+Review original customer evidence before declaring a root cause fixed. There is no live desk endpoint in the export; do not describe the snapshot as current production state.
+
+<RenderStamp {signature} />
