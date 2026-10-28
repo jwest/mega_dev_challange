@@ -10,6 +10,7 @@
   const same = (x: Side, y: Side) => sameCause(x, tenantOf(x), y, tenantOf(y));
 </script>
 
+<div data-dedupe-explorer>
 <div class="try">
   {#each [a, b] as side, i (i)}
     <fieldset>
@@ -39,6 +40,7 @@
     {/each}
   </tbody>
 </table>
+</div>
 
 <style>
   .try { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin: 1rem 0; }

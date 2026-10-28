@@ -2,7 +2,11 @@
   "name": "s01e03-support-kb",
   "private": true,
   "type": "module",
-  "scripts": { "build": "vite build", "dev": "vite --host 127.0.0.1" },
+  "scripts": {
+    "build": "vite build",
+    "build:static": "node build-static.mjs",
+    "dev": "vite --host 127.0.0.1"
+  },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.0.0",
     "mdsvex": "^0.12.6",

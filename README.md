@@ -4,6 +4,7 @@ Public delivery for the MEGA.dev support desk exercise. Source: `kb-export-267ef
 
 ## Deliverables
 
+- Browsable static knowledge base: [`site/index.html`](site/index.html). Download the `site/` directory and open `index.html`; all internal links lead to relative `.html` files. Current decision: [`site/decisions/0003-4471-disposition.html`](site/decisions/0003-4471-disposition.html).
 - Direct page source: [`page.svx`](page.svx), a copy of the current KB route below; rendered counterpart: [`rendered.html`](rendered.html).
 - [Parser issue — 379 reports](https://github.com/jwest/mega_dev_challange/issues/1).
 - [booking-v3 hint issue — 33 reports](https://github.com/jwest/mega_dev_challange/issues/2).
@@ -25,6 +26,21 @@ npm run dev
 ```
 
 Open `/kb/decisions/0003-4471-disposition` on the local server. The `.svx` is compiled with mdsvex and Svelte 5; it uses the original exported components and logic. The build is a client application; `rendered.html` is a captured, fully rendered standalone HTML artifact, not an empty application shell.
+
+## Static website
+
+```sh
+npm ci
+npm run build:static
+```
+
+Open `site/index.html` directly in a browser. This separate build renders every KB route using Svelte's server renderer and embeds its CSS in a complete HTML document. It preserves the computed tables, SVG charts and desk references without browser JavaScript. Only the deduplication explorer is mounted as an interactive island, using an inline classic script so it also works over `file://`. Its initial result and example table remain visible when JavaScript is disabled.
+
+The generator is `build-static.mjs`; server and browser entry points are `src/static-server.js` and `src/static-client.js`. Internal KB links are rewritten to relative `.html` destinations, and unknown KB targets fail the build. No API, application server or client-side router is needed. Pages reflect the data and review ages at build time; rebuild after source changes.
+
+The generated `site/` directory can be uploaded unchanged to a static host, including GitHub Pages under a repository subpath. Publish its **contents** as the site root. The `.nojekyll` marker is included. This build does not itself configure or deploy GitHub Pages.
+
+Verified on 2026-10-28 in Chromium: all six HTML documents opened over `file://`, every internal link resolved, and all pages retained content and styles with JavaScript disabled. The current decision rendered 412 reports, 379/33 coverage, 54 chart bars and desk ref `DR-HFNH-7B9H`. Changing the explorer's second tenant from `kettle.books` to `alder.physio` changed the verdict from “different causes — keep apart” to “same cause — merge”; no page JavaScript errors were observed. Both `npm run build:static` and the existing `npm run build` passed.
 
 ## Findings and boundaries
 
