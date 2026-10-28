@@ -4,6 +4,7 @@ Public delivery for the MEGA.dev support desk exercise. Source: `kb-export-267ef
 
 ## Deliverables
 
+- Direct page source: [`page.svx`](page.svx), a copy of the current KB route below; rendered counterpart: [`rendered.html`](rendered.html).
 - [Parser issue — 379 reports](https://github.com/jwest/mega_dev_challange/issues/1).
 - [booking-v3 hint issue — 33 reports](https://github.com/jwest/mega_dev_challange/issues/2).
 - Current signed KB page: [`src/routes/kb/decisions/0003-4471-disposition/+page.svx`](src/routes/kb/decisions/0003-4471-disposition/+page.svx).

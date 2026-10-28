@@ -1,0 +1,59 @@
+---
+layout: runbook
+title: '0003 · #4471 closed: parser fixed, hint retired'
+owner: jwest
+status: accepted
+reviewed: 2026-10-28
+signature: 'jwest · S01E03 · 2026-10-28'
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  import ReportExceptions from '#lib/kb/ReportExceptions.svelte';
+</script>
+
+## Current disposition
+
+The course support desk's **engineering update**, read on 28 October 2026, states **#4471 closed 05 oct**:
+
+- **Parser — fixed:** `fix(dates): parse dd/mm for eu locales`. [Engineering ticket 1](https://github.com/jwest/mega_dev_challange/issues/1) is closed as completed.
+- **Hint — won't fix:** `booking-v3 form retired`. [Engineering ticket 2](https://github.com/jwest/mega_dev_challange/issues/2) is closed as not planned. The hint was not fixed; retiring the form removed the affected path.
+
+This new record updates the disposition in [0002: Separate causes behind #4471](/kb/decisions/0002-dedupe-by-cause) without editing that accepted decision. Its cause-aware triage rule still replaces [0001: subject-only merging](/kb/decisions/0001-dedupe-by-subject). The old incident's “known, one fix queued” text is historical, not the current status.
+
+## Historical report coverage
+
+The components below describe the supplied **4 October export**, before the engineering update. They do not measure post-fix failures. In particular, the table's “no ticket of its own” label describes the old export; the hint now has the linked ticket and explicit won't-fix disposition above.
+
+<CauseTable ticket={4471} />
+
+Counts come from report IDs, tenant locale, form version and channel, not browser-based intake tags. Export pages overlap; one ID means one report. The shared parser and booking-v3's misleading month-first hint are separate defects. Fixing the parser is not evidence that the hint was fixed.
+
+## Residual evidence
+
+Five historical parser-routed reports have bodies that do not prove a day/month swap. Preserve them for follow-up; the engineering update does not establish their individual root causes or prove they were resolved. Investigate timestamps, timezone, intended dates and booking history rather than inventing a timezone diagnosis.
+
+<ReportExceptions />
+
+## Received versus merged
+
+Reports arrived from April onward. The July merge spike is backlog processing, not the start of the failures. The export continues through early October; it does not show whether any reports arrived after the 5 October closure.
+
+<QueueTimeline ticket={4471} />
+
+## Triage going forward
+
+Read the body and resolve the tenant's actual locale and form. Match established causes, not subject lines or browser-derived tags. Keep distinct causes apart; unknown tenants and contradictory symptoms need investigation. A newly reported regression after closure needs current evidence and a new or reopened issue; do not merge it blindly into a closed historical ticket. The retired booking-v3 path is not a current form-fix task.
+
+<DedupeExplorer />
+
+## Evidence
+
+Historical source: `kb-export-267efc5e.zip`; `reports-4471.json`, tenant directory, `desk-notes.json`, `causes.ts`, `locales.ts` and the rendered components. Reproduction: repository `analyze.mjs` and `analysis.json`.
+
+Disposition source: engineering update on https://hq.mega.dev/challenges/what-it-shows, observed after first course submission. No new report export was supplied with that update. This page separates the historical counts from the later resolution statuses.
+
+<RenderStamp {signature} />
