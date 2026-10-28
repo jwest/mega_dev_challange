@@ -40,7 +40,7 @@ The generator is `build-static.mjs`; server and browser entry points are `src/st
 
 The generated `site/` directory can be uploaded unchanged to a static host, including GitHub Pages under a repository subpath. Publish its **contents** as the site root. The `.nojekyll` marker is included. This build does not itself configure or deploy GitHub Pages.
 
-Verified on 2026-10-28 in Chromium: all six HTML documents opened over `file://`, every internal link resolved, and all pages retained content and styles with JavaScript disabled. The current decision rendered 412 reports, 379/33 coverage, 54 chart bars and desk ref `DR-HFNH-7B9H`. Changing the explorer's second tenant from `kettle.books` to `alder.physio` changed the verdict from “different causes — keep apart” to “same cause — merge”; no page JavaScript errors were observed. Both `npm run build:static` and the existing `npm run build` passed.
+Verified on 2026-10-28 in Chromium: all six HTML documents opened over `file://`, every internal link resolved, and all pages retained content and styles with JavaScript disabled. The current decision rendered 412 reports, 379/33 coverage and 54 chart bars. After it was signed with the course-issued signature, it renders desk ref `DR-MEAS-T81M`. Changing the explorer's second tenant from `kettle.books` to `alder.physio` changed the verdict from “different causes — keep apart” to “same cause — merge”; no page JavaScript errors were observed. Both `npm run build:static` and the existing `npm run build` passed.
 
 ## Findings and boundaries
 

@@ -4,7 +4,7 @@ title: '0003 · #4471 closed: parser fixed, hint retired'
 owner: jwest
 status: accepted
 reviewed: 2026-10-28
-signature: 'jwest · S01E03 · 2026-10-28'
+signature: v1.eyJzdWIiOiIzMzM1IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyMTMxMzgsImV4cCI6MTc5MzI5OTUzOH0.JnWP9qCd-wt_NSin5tkEl4BlJMLv1WLIUwD5AvLOGcQ
 ---
 
 <script>
